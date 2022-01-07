@@ -1,0 +1,3 @@
+UART.c:10:6:UART_EnableClock	4	static
+UART.c:15:6:UART_Init	16	static
+UART.c:33:6:UART_Transmit	16	static
