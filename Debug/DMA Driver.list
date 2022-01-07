@@ -39,11 +39,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_line   00000d22  00000000  00000000  00030190  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000503e9  00000000  00000000  00030eb2  2**0
+ 18 .debug_str    000503e7  00000000  00000000  00030eb2  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  0008129b  2**0
+ 19 .comment      00000053  00000000  00000000  00081299  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  000003bc  00000000  00000000  000812f0  2**2
+ 20 .debug_frame  000003bc  00000000  00000000  000812ec  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -76,12 +76,12 @@ Disassembly of section .text:
  80001cc:	20000008 	.word	0x20000008
  80001d0:	08000d88 	.word	0x08000d88
 
-080001d4 <_Disable_Interrupts>:
+080001d4 <_Clear_Interrupts>:
  */
 
 #include "DMA.h"
 
-void _Disable_Interrupts(DMA_Registers* LINE, const DMA_InitializationObject* config_obj)
+void _Clear_Interrupts(DMA_Registers* LINE, const DMA_InitializationObject* config_obj)
 {
  80001d4:	b480      	push	{r7}
  80001d6:	b085      	sub	sp, #20
@@ -97,21 +97,21 @@ void _Disable_Interrupts(DMA_Registers* LINE, const DMA_InitializationObject* co
  80001de:	233d      	movs	r3, #61	; 0x3d
  80001e0:	60fb      	str	r3, [r7, #12]
 
-	for (int i = 0; i <= (config_obj->stream % 4); i++)
+	for (int i = 0; i < (config_obj->stream % 4); i++)
  80001e2:	2300      	movs	r3, #0
  80001e4:	60bb      	str	r3, [r7, #8]
- 80001e6:	e00c      	b.n	8000202 <_Disable_Interrupts+0x2e>
+ 80001e6:	e00c      	b.n	8000202 <_Clear_Interrupts+0x2e>
 	{
 		if (i != 2)
  80001e8:	68bb      	ldr	r3, [r7, #8]
  80001ea:	2b02      	cmp	r3, #2
- 80001ec:	d003      	beq.n	80001f6 <_Disable_Interrupts+0x22>
+ 80001ec:	d003      	beq.n	80001f6 <_Clear_Interrupts+0x22>
 		{
 			interrupts = interrupts << 6;
  80001ee:	68fb      	ldr	r3, [r7, #12]
  80001f0:	019b      	lsls	r3, r3, #6
  80001f2:	60fb      	str	r3, [r7, #12]
- 80001f4:	e002      	b.n	80001fc <_Disable_Interrupts+0x28>
+ 80001f4:	e002      	b.n	80001fc <_Clear_Interrupts+0x28>
 		}
 		else
 		{
@@ -119,7 +119,7 @@ void _Disable_Interrupts(DMA_Registers* LINE, const DMA_InitializationObject* co
  80001f6:	68fb      	ldr	r3, [r7, #12]
  80001f8:	029b      	lsls	r3, r3, #10
  80001fa:	60fb      	str	r3, [r7, #12]
-	for (int i = 0; i <= (config_obj->stream % 4); i++)
+	for (int i = 0; i < (config_obj->stream % 4); i++)
  80001fc:	68bb      	ldr	r3, [r7, #8]
  80001fe:	3301      	adds	r3, #1
  8000200:	60bb      	str	r3, [r7, #8]
@@ -128,7 +128,7 @@ void _Disable_Interrupts(DMA_Registers* LINE, const DMA_InitializationObject* co
  8000206:	f003 0303 	and.w	r3, r3, #3
  800020a:	68ba      	ldr	r2, [r7, #8]
  800020c:	429a      	cmp	r2, r3
- 800020e:	ddeb      	ble.n	80001e8 <_Disable_Interrupts+0x14>
+ 800020e:	dbeb      	blt.n	80001e8 <_Clear_Interrupts+0x14>
 		}
 	}
 
@@ -239,10 +239,10 @@ void DMA_Config(DMA_Registers* LINE, DMA_InitializationObject* config_obj)
  80002ce:	2b00      	cmp	r3, #0
  80002d0:	d1ef      	bne.n	80002b2 <DMA_Config+0x2a>
 	//	Clearing all interrupts
-	_Disable_Interrupts(LINE, config_obj);
+	_Clear_Interrupts(LINE, config_obj);
  80002d2:	6839      	ldr	r1, [r7, #0]
  80002d4:	6878      	ldr	r0, [r7, #4]
- 80002d6:	f7ff ff7d 	bl	80001d4 <_Disable_Interrupts>
+ 80002d6:	f7ff ff7d 	bl	80001d4 <_Clear_Interrupts>
 	//	Channel Selection
 	LINE->S[config_obj->stream].CR.Bits.CHSEL = config_obj->channel;
  80002da:	683b      	ldr	r3, [r7, #0]

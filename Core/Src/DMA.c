@@ -18,7 +18,7 @@ void _Clear_Interrupts(DMA_Registers* LINE, const DMA_InitializationObject* conf
 // couldn't find a simpler way to access these bits directly, because of the scattered reserved bits
 	int interrupts = FIFO_ERROR | DIRECT_MODE_ERROR | TRANSFER_ERROR | HALF_TRANSFER_COMPLETE | TRANSFER_COMPLETE;
 
-	for (int i = 0; i <= (config_obj->stream % 4); i++)
+	for (int i = 0; i < (config_obj->stream % 4); i++)
 	{
 		if (i != 2)
 		{
@@ -46,7 +46,7 @@ void DMA_Config(DMA_Registers* LINE, DMA_InitializationObject* config_obj)
 	LINE->S[config_obj->stream].CR.Bits.EN = 0;
 	while(LINE->S[config_obj->stream].CR.Bits.EN);
 	//	Clearing all interrupts
-	_Disable_Interrupts(LINE, config_obj);
+	_Clear_Interrupts(LINE, config_obj);
 	//	Channel Selection
 	LINE->S[config_obj->stream].CR.Bits.CHSEL = config_obj->channel;
 	//	Configure the number of data to be transfered

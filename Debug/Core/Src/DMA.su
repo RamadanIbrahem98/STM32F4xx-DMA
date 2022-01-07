@@ -1,4 +1,4 @@
-DMA.c:10:6:_Disable_Interrupts	24	static
+DMA.c:10:6:_Clear_Interrupts	24	static
 DMA.c:37:6:DMA_EnableClock	16	static
 DMA.c:43:6:DMA_Config	16	static
 DMA.c:101:6:DMA_BeginTransport	16	static
