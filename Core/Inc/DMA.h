@@ -13,27 +13,30 @@
 #include "DMA_Registers.h"
 #include "StandardTypes.h"
 
-#define NULL ((void *) 0)
+#define NULL ((void *)0)
 
 #define DMA1 ((DMA_Registers *)(0x40026000))
 #define DMA2 ((DMA_Registers *)(0x40026400))
 
-typedef struct {
+typedef struct
+{
 	CR_Register CR;
 	NDTR_Register NDTR;
 	PAR_Register PAR;
 	M0AR_Register M0AR;
 	M1AR_Register M1AR;
 	FCR_Register FCR;
-}StreamX;
+} StreamX;
 
-typedef struct{
+typedef struct
+{
 	vuint32 ISR[2];
 	vuint32 IFCR[2];
 	StreamX S[8];
-}DMA_Registers;
+} DMA_Registers;
 
-typedef enum {
+typedef enum
+{
 	CHANNEL0,
 	CHANNEL1,
 	CHANNEL2,
@@ -42,9 +45,10 @@ typedef enum {
 	CHANNEL5,
 	CHANNEL6,
 	CHANNEL7,
-}DMA_CHANNEL;
+} DMA_CHANNEL;
 
-typedef enum {
+typedef enum
+{
 	STREAM0,
 	STREAM1,
 	STREAM2,
@@ -53,94 +57,106 @@ typedef enum {
 	STREAM5,
 	STREAM6,
 	STREAM7,
-}DMA_STREAM;
+} DMA_STREAM;
 
-typedef enum {
+typedef enum
+{
 	PERIPHERAL_MEMORY,
 	MEMORY_PERIPHERAL,
 	MEMORY_MEMORY,
-}DMA_MODE;
+} DMA_MODE;
 
-typedef enum {
+typedef enum
+{
 	LOW_PRIORITY,
 	MEDIUM_PRIORITY,
 	HIGH_PRIORITY,
 	VERY_HIGH_PRIORITY,
-}DMA_PRIORITY;
+} DMA_PRIORITY;
 
-typedef enum {
+typedef enum
+{
 	SINGLE,
 	INCR4,
 	INCR8,
 	INCR16,
-}DMA_BURST;
+} DMA_BURST;
 
-typedef enum {
+typedef enum
+{
 	BYTE,
 	HALF_WORD,
 	WORD,
-}DMA_DATA_SIZE;
+} DMA_DATA_SIZE;
 
-typedef enum {
+typedef enum
+{
 	ONE_FOURTH,
 	HALF,
 	THREE_FOURTH,
 	FULL,
-}DMA_FIFO_THRESHOLD;
+} DMA_FIFO_THRESHOLD;
 
-typedef enum {
+typedef enum
+{
 	FIXED,
 	INCREMENT,
-}DMA_INC_MODE;
+} DMA_INC_MODE;
 
-typedef enum {
+typedef enum
+{
 	DMA_FLOW_CTRLED,
 	PERIPHERAL_FLOW_CTRLED,
-}DMA_FLOW_CTRL;
+} DMA_FLOW_CTRL;
 
-typedef enum {
+typedef enum
+{
 	DIRECT_MODE_DISABLED,
 	DIRECT_MODE_ENABLED,
-}DMA_DIRECT_MODE;
+} DMA_DIRECT_MODE;
 
-typedef enum {
+typedef enum
+{
 	DISABLED,
 	ENABLED,
-}DMA_INTERRUPTS_STATES;
+} DMA_INTERRUPTS_STATES;
 
-typedef enum {
+typedef enum
+{
 	FIFO_ERROR = 1,
 	DIRECT_MODE_ERROR = 4,
 	TRANSFER_ERROR = 8,
 	HALF_TRANSFER_COMPLETE = 16,
 	TRANSFER_COMPLETE = 32,
-}DMA_INTERRUPTS;
+} DMA_INTERRUPTS;
 
-typedef enum {
-	DMA1_STREAM0_IRQ=11,
+typedef enum
+{
+	DMA1_STREAM0_IRQ = 11,
 	DMA1_STREAM1_IRQ,
 	DMA1_STREAM2_IRQ,
 	DMA1_STREAM3_IRQ,
 	DMA1_STREAM4_IRQ,
 	DMA1_STREAM5_IRQ,
 	DMA1_STREAM6_IRQ,
-	DMA1_STREAM7_IRQ=47,
-	DMA2_STREAM0_IRQ=56,
+	DMA1_STREAM7_IRQ = 47,
+	DMA2_STREAM0_IRQ = 56,
 	DMA2_STREAM1_IRQ,
 	DMA2_STREAM2_IRQ,
 	DMA2_STREAM3_IRQ,
 	DMA2_STREAM4_IRQ,
-	DMA2_STREAM5_IRQ=68,
+	DMA2_STREAM5_IRQ = 68,
 	DMA2_STREAM6_IRQ,
 	DMA2_STREAM7_IRQ,
-}DMAx_STREAMx_IRQ;
+} DMAx_STREAMx_IRQ;
 
-typedef struct {
+typedef struct
+{
 	DMA_STREAM stream;
 	DMA_CHANNEL channel;
-	uint16	n_of_transfers;
-	uint32	peripheral_address;
-	uint32	memory_address;
+	uint16 n_of_transfers;
+	uint32 peripheral_address;
+	uint32 memory_address;
 	DMA_PRIORITY priority;
 	DMA_MODE direction;
 	DMA_DIRECT_MODE direct_mode;
@@ -158,7 +174,23 @@ typedef struct {
 	DMA_INTERRUPTS_STATES fifo_error_interrupt;
 	DMA_INTERRUPTS_STATES transfer_error_interrupt;
 	DMA_INTERRUPTS_STATES direct_mode_error_interrupt;
-}DMA_InitializationObject;
+} DMA_InitializationObject;
+
+typedef union
+{
+	uint8 States;
+	struct
+	{
+		uint8 FIFOError : 1;
+		uint8 DirectModeError : 1;
+		uint8 TransferError : 1;
+		uint8 HalfTransfer : 1;
+		uint8 TransferComplete : 1;
+		uint8 Reserved : 3;
+	} flags;
+} DMA_Transfer_States;
+
+DMA_Transfer_States interrupt_states;
 
 /**
  * Function: DMA_EnableClock
@@ -167,7 +199,7 @@ typedef struct {
  *
  * DMA_Registers* LINE: the DMAx to be Enabled
  */
-void DMA_EnableClock(DMA_Registers* LINE);
+void DMA_EnableClock(DMA_Registers *LINE);
 /**
  * Function: DMA_Config
  * --------------------
@@ -176,7 +208,7 @@ void DMA_EnableClock(DMA_Registers* LINE);
  * DMA_Registers* LINE: the DMAx to be Enabled
  * DMA_InitializationObject* config_obj: the object containing all configurations
  */
-void DMA_Config(DMA_Registers* LINE, DMA_InitializationObject* config_obj);
+void DMA_Config(DMA_Registers *LINE, DMA_InitializationObject *config_obj);
 /**
  * Function: DMA_BeginTransport
  * ----------------------------
@@ -185,7 +217,7 @@ void DMA_Config(DMA_Registers* LINE, DMA_InitializationObject* config_obj);
  * DMA_Registers* LINE: the DMAx to be Enabled
  * DMA_InitializationObject* config_obj: the object containing all configurations
  */
-void DMA_BeginTransport(DMA_Registers* LINE, DMA_InitializationObject* config_obj);
+void DMA_BeginTransport(DMA_Registers *LINE, DMA_InitializationObject *config_obj);
 /**
  * Function: _Clear_Interrupts
  * -----------------------------
@@ -194,10 +226,19 @@ void DMA_BeginTransport(DMA_Registers* LINE, DMA_InitializationObject* config_ob
  * DMA_Registers* LINE: the DMAx to be Enabled
  * DMA_InitializationObject* config_obj: the object containing all configurations
  */
-void _Clear_Interrupts(DMA_Registers* LINE, const DMA_InitializationObject* config_obj);
+void _Clear_Interrupts(DMA_Registers *LINE, const DMA_InitializationObject *config_obj);
+
+uint32 _Get_Interrupt_Bits(DMA_STREAM stream);
+
+DMA_Transfer_States *DMA_GET_Transfer_State(DMA_Registers *LINE, const DMA_STREAM stream);
+
+void Clear_One_Interrupt(DMA_Registers *LINE, const DMA_STREAM stream, DMA_INTERRUPTS interrupt_type);
+
+void DMA_Interrupts_Callout_Notification();
+
+void DMA2_Stream0_IRQHandler(void);
 
 #endif /* INC_DMA_H_ */
-
 
 //#define DMAn_LISR(LINE) 		GET_REG(LINE, 0x00)
 //#define DMAn_HISR(LINE) 		GET_REG(LINE, 0x04)

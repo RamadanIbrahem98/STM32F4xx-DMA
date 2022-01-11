@@ -1,9 +1,9 @@
 main.c:11:6:transmission_started	16	static
-main.c:22:6:transmission_ended	16	static
-main.c:34:6:data_integrity_error	16	static
-main.c:46:6:transmission_error	16	static
-main.c:58:6:fifo_error	16	static
-main.c:70:6:direct_error	16	static
-main.c:82:6:initialize_dma	40	static
-main.c:115:5:main	16	static
-main.c:136:6:DMA2_Stream0_IRQHandler	16	static
+main.c:24:6:transmission_ended	16	static
+main.c:37:6:data_integrity_error	16	static
+main.c:50:6:transmission_error	16	static
+main.c:63:6:fifo_error	16	static
+main.c:76:6:direct_error	16	static
+main.c:89:6:initialize_dma	40	static
+main.c:122:5:main	16	static
+main.c:144:6:DMA_Interrupts_Callout_Notification	16	static

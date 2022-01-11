@@ -1,4 +1,8 @@
-DMA.c:10:6:_Clear_Interrupts	24	static
-DMA.c:37:6:DMA_EnableClock	16	static
-DMA.c:43:6:DMA_Config	16	static
-DMA.c:101:6:DMA_BeginTransport	16	static
+DMA.c:12:8:_Get_Interrupt_Bits	24	static
+DMA.c:38:6:Clear_One_Interrupt	24	static
+DMA.c:62:6:_Clear_Interrupts	24	static
+DMA.c:68:6:DMA_EnableClock	16	static
+DMA.c:74:6:DMA_Config	16	static
+DMA.c:135:6:DMA_BeginTransport	16	static
+DMA.c:140:22:DMA_GET_Transfer_State	24	static
+DMA.c:171:6:DMA2_Stream0_IRQHandler	8	static
